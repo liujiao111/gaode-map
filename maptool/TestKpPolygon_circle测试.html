@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+		<title>折线、多边形、圆</title>
+		<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+		<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+		<script src="http://webapi.amap.com/maps?v=1.4.6&key=Fbfd53015b31face22d005829a3b4756"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=5KAySGU5Lr6CPvIZxzZA4MfjYu7rmhr6"></script>
+		<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+		<script type="text/javascript" src="KpPolygon.js"></script>
+	</head>
+
+	<body>
+		
+		<div id="container" style="margin-top:30px;">
+			
+			
+		</div>
+		<button onclick="removeOneCovering()">移除单个</button>
+		<button onclick="removeAllCovering()">全部移除</button>
+		<input type="hidden" id = 'polygonId'/>
+		
+		
+	
+        <!--
+        	作者：offline
+        	时间：2018-06-07
+        	描述：百度/高德地图的圆形覆盖物的渲染以及移除测试
+        -->
+		<script type="text/javascript">
+			var circleStr1 = "113.517032,22.350776";
+			var circleStr2 = "113.551694,22.365569";
+
+			//移除单个
+			function removeOneCovering() {
+				var id = $("#polygonId").val();
+				kpPolygon.removeCircleById(id);
+			}
+			
+			//移除全部覆盖物
+			function removeAllCovering() {
+				kpPolygon.removeAllCircle();
+				//alert(kpPolygon.amapCircleList.length);
+				//alert(kpPolygon.bmapCircleList.length);
+			}
+			
+			
+			function testAMap() {
+				var map = new AMap.Map('container', {
+					resizeEnable: true,
+					center: [113.517032,22.350776],
+					zoom: 13
+				});
+
+				var circle1 = kpPolygon.addCircle(map, circleStr1);
+				var circle2 = kpPolygon.addCircle(map, circleStr2);
+				var id1 = circle2['id'];
+				//alert(id1);
+				$("#polygonId").val(id1);
+				//alert(kpPolygon.getCircleById(id1)['id']);
+			}
+			
+			function testBMap() {
+				var map = new BMap.Map("container");
+				var point = new BMap.Point(113.517032,22.350776);
+				map.centerAndZoom(point, 13);
+				map.enableScrollWheelZoom(true);
+
+			    var circle1 = kpPolygon.addCircle(map, circleStr1);
+				var circle2 = kpPolygon.addCircle(map, circleStr2);
+				var id1 = circle2['id'];
+				//alert(id1);
+				$("#polygonId").val(id1);
+				//alert(kpPolygon.getCircleById(id1)['id']);
+			}
+			
+			testBMap();
+		</script>
+	</body>
+
+</html>
